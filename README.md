@@ -105,7 +105,7 @@ For patches please see grub2_2.02~beta3-4.diff
 -------------------------------------------------------------------------------
 Put info about what kernel you're using, including which patches it includes to enforce Secure Boot here:
 -------------------------------------------------------------------------------
-linux-4.10.0
+linux-4.14.0
 
 No pacthes are applied yet.
 
