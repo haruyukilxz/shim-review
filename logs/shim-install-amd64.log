@@ -1,0 +1,20 @@
+gcc -Og -g3 -Wall -Werror -Wextra -o buildid /home/demo/dev/shim/buildid.c -lelf
+Making BOOTX64.CSV
+install -d -m 0755 ../shim-output/amd64/
+install -d -m 0755 ../shim-output/amd64//usr/lib/debug/boot/efi/EFI/deepin//
+install -d -m 0755 ../shim-output/amd64//usr/src/debug//shim-15
+find /home/demo/dev/shim -type f -a '(' -iname '*.c' -o -iname '*.h' -o -iname '*.S' ')' | while read file ; do \
+	outfile=$(echo ${file} | sed -e "s,^/home/demo/dev/shim,,") ; \
+	install -d -m 0755 ../shim-output/amd64//usr/src/debug//shim-15/$(dirname ${outfile}) ; \
+	install -m 0644 ${file} ../shim-output/amd64//usr/src/debug//shim-15/${outfile} ; \
+done
+install -d -m 0755 ../shim-output/amd64/
+install -d -m 0700 ../shim-output/amd64/boot/efi/
+install -d -m 0755 ../shim-output/amd64/boot/efi/EFI/BOOT/
+install -d -m 0755 ../shim-output/amd64/boot/efi/EFI/deepin/
+install -m 0644 shimx64.efi ../shim-output/amd64/boot/efi/EFI/BOOT//BOOTX64.EFI
+install -m 0644 shimx64.efi ../shim-output/amd64/boot/efi/EFI/deepin//
+install -m 0644 BOOTX64.CSV ../shim-output/amd64/boot/efi/EFI/deepin//
+install -m 0644 fbx64.efi ../shim-output/amd64/boot/efi/EFI/BOOT//
+install -m 0644 mmx64.efi ../shim-output/amd64/boot/efi/EFI/BOOT//
+install -m 0644 mmx64.efi ../shim-output/amd64/boot/efi/EFI/deepin//

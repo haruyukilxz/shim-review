@@ -68,12 +68,12 @@ Who is the secondary contact for security updates, etc.
 -------------------------------------------------------------------------------
 What upstream shim tag is this starting from:
 -------------------------------------------------------------------------------
-14
+15
 
 -------------------------------------------------------------------------------
 URL for a repo that contains the exact code which was built to get this binary:
 -------------------------------------------------------------------------------
-https://github.com/rhboot/shim/tree/14
+https://github.com/rhboot/shim/tree/15
 
 -------------------------------------------------------------------------------
 What patches are being applied and why:
@@ -86,14 +86,14 @@ What OS and toolchain must we use to reproduce this build?  Include where to fin
 
 - Ubuntu 16.04 LTS Xenial Xerus
 - gcc: 4:5.3.1-1ubuntu1
-- binutils: 2.26.1-1ubuntu1~16.04.4
-- gnu-efi: 3.0.2-1ubuntu1
+- binutils: 2.26.1-1ubuntu1~16.04.6
+- gnu-efi: 3.0.8
 
 -------------------------------------------------------------------------------
 Which files in this repo are the logs for your build?   This should include logs for creating the buildroots, applying patches, doing the build, creating the archives, etc.
 -------------------------------------------------------------------------------
-- shimia32-build.log
-- shimx64-build.log
+- [logs/shim-build-ia32.log](logs/shim-build-ia32.log)
+- [log/shim-build-amd6.log](logs/shim-build-amd64.log)
 
 -------------------------------------------------------------------------------
 Put info about what bootloader you're using, including which patches it includes to enforce Secure Boot here:
@@ -105,23 +105,54 @@ For patches please see grub2_2.02~beta3-4.diff
 -------------------------------------------------------------------------------
 Put info about what kernel you're using, including which patches it includes to enforce Secure Boot here:
 -------------------------------------------------------------------------------
-linux-4.14.0
+linux-4.14.12
 
-No pacthes are applied yet.
+All applied patches are included in [kernel-patches](kernel-patches) folder.
+These patches are picked from https://github.com/vathpela/linux/tree/secure-boot-4.14
 
 -------------------------------------------------------------------------------
 Files to be signed:
 -------------------------------------------------------------------------------
 
-- 59c00f12bc207247a97712574013c8e15492b0e0ba37e10f04b8411ebafd51f2  shimia32.efi
-- aae008dcead8298297f37234439037a642a46bbcf37c574926c547ab53647217  shimx64.efi
+- 3d62c673fd036556e92a710212a8a703e1283b897e3d29d7bce7d53ba15e4bc0  [shim/shimia32.efi](shim/shimia32.efi)
+- f5df967a93f541ef3a6d5f754375d85dff934e6c3204d91c0e502cd888d6addf  [shim/shimx64.efi](shim/shimx64.efi)
 
 -------------------------------------------------------------------------------
 CAB archive submitted to Microsoft:
 -------------------------------------------------------------------------------
-UEFI submission #2050412
+UEFI submission #2259423
 
-- 821c02d88deaebb19416abddc8e77e258a790c7ad7f33b14860028051f66fcde  shimia32.cab
+- 6dce718d2b5ac370aa31b1a99c8a54dfb2bb49501990e9ec24f547c161eb6b14  [shim/shimia32.cab](shim/shimia32.cab)
 
-UEFI submission #2048383
-- 09a2bdac0e73105a0a948df01f4360a70e6cee8b430c648243d556e84895cefb  shimx64.cab
+UEFI submission #2259422
+- 337601ab6f30baa5da6c26e0225e2bbb8fad58e8b3d01c7b0d54f178c5130bae  [shim/shimx64.cab](shim/shimx64.cab)
+
+
+------------------------------------------------------------------------------
+Notes:
+------------------------------------------------------------------------------
+
+File info:
+
+```text
+|-- deepin.cer                       // Public cert file
+|-- grub2_2.02~beta3-4.diff          // grub2 patches
+|-- kernel-patches                   // SHIM patches for linux-4.14.0
+|-- logs
+|   |-- shim-build-amd64.log         // Build log for shim 15, x64
+|   |-- shim-build-ia32.log          // Build log for shim 15, ia32
+|   |-- shim-install-amd64.log
+|   `-- shim-install-ia32.log
+|-- shim
+|   |-- shimia32-unsigned.cab        // Unsigned ia32 efi file, in cab format
+|   |-- shimia32.cab                 // Signed ia32 efi file, in cab format
+|   |-- shimia32.efi                 // Unsigned ia32 efi file
+|   |-- shimx64-unsigned.cab         // Unsigned amd64 efi file, in cab format
+|   |-- shimx64.cab                  // Signed amd64 efi file, in cab format
+|   `-- shimx64.efi                  // Unsigned amd64 efi file
+`-- src
+    |-- build-gnu-efi.sh             // Script to build gnu-efi
+    |-- build-shim.sh                // Script to build shim efi files
+    |-- gnu-efi-3.0.8.tar.bz2        // Source code of gnu-efi-3.0.8
+    `-- shim-15.tar.bz2              // Source code of shim-15
+```
