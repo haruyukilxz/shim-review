@@ -23,9 +23,10 @@ check_toolchain() {
   echo "Checking toolchain .."
   which wget 1>/dev/null || sudo apt install -y wget && \
   which gcc 1>/dev/null || sudo apt install -y build-essential && \
-  which lcab 1>/dev/null || sudo apt install -y lcab
-  #dpkg -l gnu-efi 1>/dev/null || sudo apt install -y gnu-efi
+  which lcab 1>/dev/null || sudo apt install -y lcab && \
+  which nproc 1>/dev/null || sudo apt install -y coreutils && \
   stat /usr/include/efi/efi.h 1>/dev/null || sudo apt install -y gnu-efi
+  #dpkg -l gnu-efi 1>/dev/null || sudo apt install -y gnu-efi
 }
 
 # Download shim source
@@ -42,8 +43,6 @@ build() {
   local arch=$1
   local gcc_arch="${arch}"
   local shim_file="shim${arch}"
-  local ncpu
-  ncpu=$(grep 'cpu cores' /proc/cpuinfo | wc -l)
   [ "${arch}" = "x64" ] && gcc_arch=x86_64
 
   echo "Building ${arch} .."
@@ -57,7 +56,7 @@ build() {
   tar -xf "${TARBALL}" || return 1
   cd "${WORKDIR}"
 
-  make ARCH="${gcc_arch}" VENDOR_CERT_FILE="${CERT_FILE}" -j${ncpu} 2>&1 | \
+  make ARCH="${gcc_arch}" VENDOR_CERT_FILE="${CERT_FILE}" -j$(nproc) 2>&1 | \
     tee "${LOGDIR}/shim-build-${arch}.log" && \
   rm -rf "${OUTPUT}/${arch}" && \
   make ARCH="${gcc_arch}" DESTDIR="${OUTPUT}/${arch}" EFIDIR="${EFI_DIR}" install && \

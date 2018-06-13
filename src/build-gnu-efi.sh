@@ -17,7 +17,8 @@ error() {
 check_toolchain() {
   echo "Checking toolchain .."
   which wget 1>/dev/null || sudo apt install -y wget && \
-  which gcc 1>/dev/null || sudo apt install -y build-essential
+  which gcc 1>/dev/null || sudo apt install -y build-essential && \
+  dpkg -l libc6-dev-i386 1>/dev/null || sudo apt install -y libc6-dev-i386
 }
 
 # Download shim source
