@@ -63,6 +63,7 @@ build() {
   make ARCH="${gcc_arch}" DESTDIR="${OUTPUT}/${arch}" EFIDIR="${EFI_DIR}" install && \
   mkdir -p "${SHIM_EFI_DIR}/cab" && \
   install -m644 "${OUTPUT}/${arch}/boot/efi/EFI/${EFI_DIR}/${shim_file}.efi" "${SHIM_EFI_DIR}/" && \
+  sha256sum "${SHIM_EFI_DIR}/${shim_file}.efi" | tee "${SHIM_EFI_DIR}/${shim_file}.efi.sha256" && \
   lcab "${SHIM_EFI_DIR}/${shim_file}.efi" "${SHIM_EFI_DIR}/cab/${shim_file}-unsigned.cab"
 
   cd ..
@@ -72,7 +73,7 @@ build() {
 main() {
   check_toolchain || error "Failed to install toolchain"
   prepare_source || error "Failed to download shim source file"
-  build ia32 || error "Failed to build shim ia32"
+  #build ia32 || error "Failed to build shim ia32"
   build x64 || error "Failed to build shim x64"
 }
 
