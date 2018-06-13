@@ -53,21 +53,20 @@ build() {
     return 1
   fi
 
+  rm -rf "${WORKDIR}"
   tar -xf "${TARBALL}" || return 1
-  cd "${WORDIR}"
+  cd "${WORKDIR}"
 
   make ARCH="${gcc_arch}" VENDOR_CERT_FILE="${CERT_FILE}" -j${ncpu} 2>&1 | \
     tee "${LOGDIR}/shim-build-${arch}.log" && \
+  rm -rf "${OUTPUT}/${arch}" && \
   make ARCH="${gcc_arch}" DESTDIR="${OUTPUT}/${arch}" EFIDIR="${EFI_DIR}" install && \
-  install -m644 "${OUTPUT}/${arch}/boot/efi/EFI/${EFI_DIR}/${shim_file}.efi" "${OUTPUT}/" && \
-  lcab"${OUTPUT}/${shim_file}.efi" "${OUTPUT}/${shim_file}-unsigned.cab"
+  mkdir -p "${SHIM_EFI_DIR}/cab" && \
+  install -m644 "${OUTPUT}/${arch}/boot/efi/EFI/${EFI_DIR}/${shim_file}.efi" "${SHIM_EFI_DIR}/" && \
+  lcab "${SHIM_EFI_DIR}/${shim_file}.efi" "${SHIM_EFI_DIR}/cab/${shim_file}-unsigned.cab"
 
   cd ..
-  rm -rvf "${WORDIR}"
-}
-
-clean() {
-  rm -rvf "${OUTPUT}"
+  rm -rf "${WORKDIR}"
 }
 
 main() {
@@ -75,7 +74,6 @@ main() {
   prepare_source || error "Failed to download shim source file"
   build ia32 || error "Failed to build shim ia32"
   build x64 || error "Failed to build shim x64"
-  #clean
 }
 
 main
