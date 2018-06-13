@@ -22,7 +22,7 @@ error() {
 check_toolchain() {
   echo "Checking toolchain .."
   which wget 1>/dev/null || sudo apt install -y wget && \
-  which gcc 1>/dev/null || sudo apt install -y build-essentials && \
+  which gcc 1>/dev/null || sudo apt install -y build-essential && \
   which lcab 1>/dev/null || sudo apt install -y lcab
   #dpkg -l gnu-efi 1>/dev/null || sudo apt install -y gnu-efi
   stat /usr/include/efi/efi.h 1>/dev/null || sudo apt install -y gnu-efi

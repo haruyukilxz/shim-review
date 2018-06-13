@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
 # Download and build gnu-efi
 
 readonly BASEDIR=$(dirname $(realpath $0))
-readonly VERSION="3.0.8"
-readonly WORKDIR="${BASEDIR}/gnu-efi-${VERSION}"
-readonly TARBALL="gnu-efi-${VERSION}.tar.bz2"
-readonly SRC_URL="https://jaist.dl.sourceforge.net/project/gnu-efi/${TARBALL}"
+readonly VERSION="2.02"
+readonly WORKDIR="${BASEDIR}/grub-${VERSION}"
+readonly TARBALL="grub-${VERSION}.tar.xz"
+readonly SRC_URL="ftp://ftp.gnu.org/gnu/grub/${TARBALL}"
 
 error() {
   echo "ERROR: $*" >&2
@@ -34,20 +34,9 @@ prepare_source() {
 # @param $1 arch, target architecture, might be x64 or ia32
 build() {
   local arch=$1
-  local libdir=/usr/lib/gnuefi
-  [ "${arch}" = x86_64 ] && libdir=/usr/lib64/gnuefi
 
   cd "${WORKDIR}" && \
-  make ARCH="${arch}" PREFIX=/usr LIBDIR="${libdir}"
-}
-
-install() {
-  local arch=$1
-  local libdir=/usr/lib/gnuefi
-  [ "${arch}" = x86_64 ] && libdir=/usr/lib64/gnuefi
-
-  cd "${WORKDIR}" && \
-  sudo make ARCH="${arch}" PREFIX=/usr LIBDIR="${libdir}" install
+  make
 }
 
 clean() {
@@ -58,10 +47,7 @@ clean() {
 main() {
   check_toolchain || error "Failed to install toolchain"
   prepare_source || error "Failed to download source"
-  build ia32 || error "Failed to build ia32 type"
-  build x86_64 || error "Failed to build x64 type"
-  install ia32
-  install x86_64
+  build
   clean
 }
 
