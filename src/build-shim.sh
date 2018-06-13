@@ -4,7 +4,7 @@
 
 readonly BASEDIR=$(dirname $(realpath $0))
 readonly VERSION=15
-readonly WORKDIR="${BASEDIR}/shim-15"
+readonly WORKDIR="${BASEDIR}/shim-${VERSION}"
 readonly OUTPUT="${BASEDIR}/shim-output"
 readonly LOGDIR="${BASEDIR}/../logs"
 readonly SHIM_EFI_DIR="${BASEDIR}/../shim"
@@ -24,7 +24,8 @@ check_toolchain() {
   which wget 1>/dev/null || sudo apt install -y wget && \
   which gcc 1>/dev/null || sudo apt install -y build-essentials && \
   which lcab 1>/dev/null || sudo apt install -y lcab
-  dpkg -l gnu-efi || sudo apt install -y gnu-efi
+  #dpkg -l gnu-efi 1>/dev/null || sudo apt install -y gnu-efi
+  stat /usr/include/efi/efi.h 1>/dev/null || sudo apt install -y gnu-efi
 }
 
 # Download shim source
