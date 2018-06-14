@@ -21,6 +21,11 @@ check_toolchain() {
   which nproc 1>/dev/null || sudo apt install -y coreutils
 }
 
+clean() {
+  echo "Clean up .."
+  rm -rf "${WORKDIR}"
+}
+
 # Download shim source
 prepare_source() {
   echo "Checking source file .."
@@ -28,6 +33,7 @@ prepare_source() {
     wget "${SRC_URL}" -O "${TARBALL}" || return 1
   fi
 
+  clean
   tar -xf "${TARBALL}"
 }
 
@@ -36,8 +42,11 @@ prepare_source() {
 build() {
   local arch=$1
 
-  cd "${WORKDIR}" && \
-    ./configure --prefix=$PWD/out --with-platform=efi --target=amd64-pe \
+  cd "${WORKDIR}"
+  QUILT_PATCHES=debian/patches QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index" \
+    quilt push -a -f
+
+  ./configure --prefix=$PWD/out --with-platform=efi --target=amd64-pe \
     --program-prefix="" && make -j$(nproc) && make install
 }
 
@@ -51,7 +60,8 @@ build_image() {
     search_fs_file chain btrfs loadbios loadenv lvm minix minix2 reiserfs \
     memrw mmap msdospart scsi loopback normal configfile gzio all_video \
     efi_gop efi_uga gfxterm gettext echo boot chain eval ls test sleep png \
-    gfxmenu linuxefi
+    gfxmenu linuxefi &&\
+  sha256sum "${OUTPUT}/grubx64.efi" > "${OUTPUT}/grubx64.efi.sha256sum"
 }
 
 sign_image() {
@@ -60,19 +70,14 @@ sign_image() {
   [ -z "${CA_CERT}" ] && error "CA_CERT variable not set"
 
   sbsign --key "${CA_KEY}" --cert "${CA_CERT}" \
-    --output "${OUTPUT}/grubx64-signed.efi" \
-    "${OUTPUT}/grubx64.efi"
-}
-
-clean() {
-  echo "Clean up .."
-  rm -rvf "${WORKDIR}"
+    --output "${OUTPUT}/grubx64-signed.efi" "${OUTPUT}/grubx64.efi" && \
+  sha256sum "${OUTPUT}/grubx64-signed.efi" > "${OUTPUT}/grubx64-signed.efi.sha256sum"
 }
 
 main() {
   check_toolchain || error "Failed to install toolchain"
-  prepare_source || error "Failed to download source"
-  build || error "Failed to build"
+  #prepare_source || error "Failed to download source"
+  #build || error "Failed to build"
   build_image || error "Failed to generate grub efi image"
   sign_image || error "Failed to sign grub efi image"
   #clean
