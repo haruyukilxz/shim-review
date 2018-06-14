@@ -25,7 +25,8 @@ check_toolchain() {
   which gcc 1>/dev/null || sudo apt install -y build-essential && \
   which lcab 1>/dev/null || sudo apt install -y lcab && \
   which nproc 1>/dev/null || sudo apt install -y coreutils && \
-  stat /usr/include/efi/efi.h 1>/dev/null || sudo apt install -y gnu-efi
+  stat /usr/include/efi/efi.h 1>/dev/null || sudo apt install -y gnu-efi && \
+  stat /usr/include/libelf.h 1>/dev/null || sudo apt install libelf-dev
   #dpkg -l gnu-efi 1>/dev/null || sudo apt install -y gnu-efi
 }
 
