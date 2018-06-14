@@ -43,11 +43,17 @@ build() {
   local arch=$1
 
   cd "${WORKDIR}"
+  for i in $(cat debian/patches/series | tac); do
+    patch -R -p1 -i debian/patches/$i
+  done
+
   QUILT_PATCHES=debian/patches QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index" \
     quilt push -a -f
 
   ./configure --prefix=$PWD/out --with-platform=efi --target=amd64-pe \
-    --program-prefix="" && make -j$(nproc) && make install
+    --program-prefix="" && \
+    make -j$(nproc) && \
+    make install
 }
 
 build_image() {
@@ -76,8 +82,8 @@ sign_image() {
 
 main() {
   check_toolchain || error "Failed to install toolchain"
-  #prepare_source || error "Failed to download source"
-  #build || error "Failed to build"
+  prepare_source || error "Failed to download source"
+  build || error "Failed to build"
   build_image || error "Failed to generate grub efi image"
   sign_image || error "Failed to sign grub efi image"
   #clean
