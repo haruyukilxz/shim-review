@@ -92,38 +92,34 @@ What OS and toolchain must we use to reproduce this build?  Include where to fin
 -------------------------------------------------------------------------------
 Which files in this repo are the logs for your build?   This should include logs for creating the buildroots, applying patches, doing the build, creating the archives, etc.
 -------------------------------------------------------------------------------
-- [logs/shim-build-ia32.log](logs/shim-build-ia32.log)
-- [log/shim-build-amd6.log](logs/shim-build-amd64.log)
+- [logs/shim-build-x64.log](logs/shim-build-x64.log)
 
 -------------------------------------------------------------------------------
 Put info about what bootloader you're using, including which patches it includes to enforce Secure Boot here:
 -------------------------------------------------------------------------------
-grub2_2.02~beta3-4
+grub-2.02
 
 For patches please see grub2_2.02~beta3-4.diff
+All patches applied to grub 2.02 are placed at [src/grub2.02-patches](src/grub2.02-patches)
 
 -------------------------------------------------------------------------------
 Put info about what kernel you're using, including which patches it includes to enforce Secure Boot here:
 -------------------------------------------------------------------------------
-linux-4.14.12
+linux-4.14.49
 
-All applied patches are included in [kernel-patches](kernel-patches) folder.
+All applied patches are included in [src/kernel-secure-boot-patches](src/kernel-secure-boot-patches) folder.
 These patches are picked from https://github.com/vathpela/linux/tree/secure-boot-4.14
 
 -------------------------------------------------------------------------------
 Files to be signed:
 -------------------------------------------------------------------------------
 
-- 3d62c673fd036556e92a710212a8a703e1283b897e3d29d7bce7d53ba15e4bc0  [shim/shimia32.efi](shim/shimia32.efi)
+69b542e50bfde0889f70b71bbdf2eb28ce352c72f091ec7000529efcba0b9ce0  /home/demo/dev/shim-review/src/../shim/shimx64.efi
 - f5df967a93f541ef3a6d5f754375d85dff934e6c3204d91c0e502cd888d6addf  [shim/shimx64.efi](shim/shimx64.efi)
 
 -------------------------------------------------------------------------------
 CAB archive submitted to Microsoft:
 -------------------------------------------------------------------------------
-UEFI submission #2259423
-
-- 6dce718d2b5ac370aa31b1a99c8a54dfb2bb49501990e9ec24f547c161eb6b14  [shim/shimia32.cab](shim/shimia32.cab)
-
 UEFI submission #2259422
 - 337601ab6f30baa5da6c26e0225e2bbb8fad58e8b3d01c7b0d54f178c5130bae  [shim/shimx64.cab](shim/shimx64.cab)
 
