@@ -7,7 +7,7 @@ This repo is for review of requests for signing shim.  To create a request for r
 - commit all of that
 - tag it with a tag of the form "myorg-shim-arch-YYYYMMDD"
 - push that to github
-- file an issue at https://github.com/rhboot/shim-review/issues with a link to your tag
+- file an issue at https: //github.com/rhboot/shim-review/issues with a link to your tag
 
 Note that we really only have experience with using grub2 on Linux, so asking
 us to endorse anything else for signing is going to require some convincing on
@@ -25,7 +25,7 @@ Building B18, Optics Valley Financial Harbour,
 No. 77, Optics Valley Avenue,
 Wuhan, China
 
-https://www.deepin.org/en/
+https: //www.deepin.org/en/
 
 Established in 2011, Wuhan Deepin Technology Co., Ltd. is a commercial company
 focused on the R&D and service of Linux-based Chinese operating system.
@@ -52,7 +52,7 @@ Who is the primary contact for security updates, etc.
 - Position: App Store Director
 - Email address: xushaohua@deepin.com
 - PGP key, signed by the other security contacts, and preferably also with signatures that are reasonably well known in the linux community:
-  https://pgp.mit.edu/pks/lookup?op=get&search=0xA45D92C206D5EEE5
+  https: //pgp.mit.edu/pks/lookup?op=get&search=0xA45D92C206D5EEE5
   PGP key fingerprint: AC52 085A 3905 893D 3868 C9D7 A45D 92C2 06D5 EEE5
 
 -------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ Who is the secondary contact for security updates, etc.
 - Position: App Store Director
 - Email address: xushaohua@deepin.com
 - PGP key, signed by the other security contacts, and preferably also with signatures that are reasonably well known in the linux community:
-  https://pgp.mit.edu/pks/lookup?op=get&search=0xA45D92C206D5EEE5
+  https: //pgp.mit.edu/pks/lookup?op=get&search=0xA45D92C206D5EEE5
   PGP key fingerprint: AC52 085A 3905 893D 3868 C9D7 A45D 92C2 06D5 EEE5
 
 -------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ What upstream shim tag is this starting from:
 -------------------------------------------------------------------------------
 URL for a repo that contains the exact code which was built to get this binary:
 -------------------------------------------------------------------------------
-https://github.com/rhboot/shim/tree/15
+https: //github.com/rhboot/shim/tree/15
 
 -------------------------------------------------------------------------------
 What patches are being applied and why:
@@ -108,14 +108,13 @@ Put info about what kernel you're using, including which patches it includes to 
 linux-4.14.49
 
 All applied patches are included in [src/kernel-secure-boot-patches](src/kernel-secure-boot-patches) folder.
-These patches are picked from https://github.com/vathpela/linux/tree/secure-boot-4.14
+These patches are picked from https: //github.com/vathpela/linux/tree/secure-boot-4.14
 
 -------------------------------------------------------------------------------
 Files to be signed:
 -------------------------------------------------------------------------------
 
-69b542e50bfde0889f70b71bbdf2eb28ce352c72f091ec7000529efcba0b9ce0  /home/demo/dev/shim-review/src/../shim/shimx64.efi
-- f5df967a93f541ef3a6d5f754375d85dff934e6c3204d91c0e502cd888d6addf  [shim/shimx64.efi](shim/shimx64.efi)
+- 69b542e50bfde0889f70b71bbdf2eb28ce352c72f091ec7000529efcba0b9ce0  [shim/shimx64.efi](shim/shimx64.efi)
 
 -------------------------------------------------------------------------------
 CAB archive submitted to Microsoft:
@@ -131,24 +130,31 @@ Notes:
 File info:
 
 ```text
-|-- deepin.cer                       // Public cert file
-|-- grub2_2.02~beta3-4.diff          // grub2 patches
-|-- kernel-patches                   // SHIM patches for linux-4.14.0
-|-- logs
-|   |-- shim-build-amd64.log         // Build log for shim 15, x64
-|   |-- shim-build-ia32.log          // Build log for shim 15, ia32
-|   |-- shim-install-amd64.log
-|   `-- shim-install-ia32.log
-|-- shim
-|   |-- shimia32-unsigned.cab        // Unsigned ia32 efi file, in cab format
-|   |-- shimia32.cab                 // Signed ia32 efi file, in cab format
-|   |-- shimia32.efi                 // Unsigned ia32 efi file
-|   |-- shimx64-unsigned.cab         // Unsigned amd64 efi file, in cab format
-|   |-- shimx64.cab                  // Signed amd64 efi file, in cab format
-|   `-- shimx64.efi                  // Unsigned amd64 efi file
-`-- src
-    |-- build-gnu-efi.sh             // Script to build gnu-efi
-    |-- build-shim.sh                // Script to build shim efi files
-    |-- gnu-efi-3.0.8.tar.bz2        // Source code of gnu-efi-3.0.8
-    `-- shim-15.tar.bz2              // Source code of shim-15
+.
+├── deepin.cer                            // Public CERT file
+├── grub
+│   ├── grubx64.efi                       // GRUB 2.02 efi firmware
+│   ├── grubx64.efi.sha256sum
+│   ├── grubx64-signed.efi
+│   └── grubx64-signed.efi.sha256sum
+├── logs
+│   └── shim-build-x64.log                // Build log for SHIM 15 on x64
+├── shim
+│   ├── cab
+│   │   ├── shimx64-signed.cab
+│   │   ├── shimx64-unsigned.cab          // Generated SHIM x64 cab file
+│   │   └── shimx64-unsigned.cab.sha256
+│   ├── shimx64.efi                       // SHIM x64 firmware
+│   └── shimx64.efi.sha256
+└── src
+    ├── build-gnu-efi.sh                  // gnu-efi build script
+    ├── build-grub.sh                     // GRUB efi build script
+    ├── build-kernel.sh                   // Kernel build script
+    ├── build-shim.sh                     // SHIM efi build script
+    ├── gnu-efi-3.0.8.tar.bz2             // gnu-efi source tarball
+    ├── grub2.02-patches                  // GRUB 2.02 patches
+    ├── grub-debian-2.02+dfsg1-4.tar.bz2  // GRUB 2.02 source tarball
+    ├── kernel-secure-boot-patches        // Linux kernel 4.14 Secure-Boot patches
+    ├── linux-4.14.49.tar.xz              // Linux 4.14 source tarball
+    └── shim-15.tar.gz                    // SHIM 15 source tarball
 ```
