@@ -50,8 +50,20 @@ build() {
   QUILT_PATCHES=debian/patches QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index" \
     quilt push -a -f
 
-  ./configure --prefix=$PWD/out --with-platform=efi --target=amd64-pe \
-    --program-prefix="" && \
+  local readonly PREFIX=$PWD/out
+  ./configure \
+    --prefix=$PREFIX \
+    --build=x86_64-linux-gnu \
+    --includedir=$PREFIX/include \
+    --mandir=$PREFIX/share/man \
+    --infodir=$PREFIX/share/info \
+    --libexecdir=$PREFIX/lib/grub2 \
+    --disable-silent-rules \
+    --disable-maintainer-mode \
+    --disable-dependency-tracking \
+    --enable-grub-mkfont \
+    --disable-grub-emu-usb \
+    --with-platform=pc && \
     make -j$(nproc) && \
     make install
 }
